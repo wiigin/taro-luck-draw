@@ -87,7 +87,7 @@ export default {
     return {}
   }
 }
-<script>
+</script>
 ```
 
 - **`taro-react`**
