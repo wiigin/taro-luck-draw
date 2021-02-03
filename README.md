@@ -103,7 +103,7 @@ export default {
 
 - **`taro-vue`**
 
-```
+```vue
 <template>
   <view>
     <LuckyWheel
