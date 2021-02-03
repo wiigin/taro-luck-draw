@@ -1,6 +1,6 @@
 {
   "name": "taro-luck-draw",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "基于 taro 实现的大转盘 / 九宫格抽奖插件",
   "main": "index.js",
   "scripts": {
@@ -10,14 +10,25 @@
     "type": "git",
     "url": "git+https://github.com/LuckDraw/taro-luck-draw.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "taro抽奖插件",
+    "taro大转盘抽奖",
+    "taro九宫格抽奖"
+  ],
+  "author": "ldq <17778888138@189.cn>",
+  "license": "BSD-3-Clause",
+  "files": [
+    "README.md",
+    "package.json",
+    "vue",
+    "react",
+    "LICENSE"
+  ],
   "bugs": {
     "url": "https://github.com/LuckDraw/taro-luck-draw/issues"
   },
   "homepage": "https://100px.net",
   "dependencies": {
-    "lucky-canvas": "^1.4.5"
+    "lucky-canvas": "^1.5.0"
   }
 }
