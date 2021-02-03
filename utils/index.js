@@ -7,7 +7,7 @@ export const getFlag = () => {
       flag = 'WEB'
       break
     case 'weapp':
-      flag = 'TARO-MP-WX'
+      flag = 'TARO-MP'
       break
     case 'rn':
       flag = 'TARO-RN'
