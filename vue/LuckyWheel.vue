@@ -1,7 +1,7 @@
 <template>
   <view class="lucky-box" :style="{ width: boxWidth + 'px', height: boxHeight + 'px' }">
-    <canvas id="lucky-canvas" @touchstart="handleClick" :style="{ width: boxWidth + 'px', height: boxHeight + 'px' }" canvasId="luckyWheel" />
-    <view class="lucky-wheel-btn" @touchstart="toPlay" :style="{ width: btnWidth + 'px', height: btnHeight + 'px' }"></view>
+    <canvas id="lucky-canvas" :style="{ width: boxWidth + 'px', height: boxHeight + 'px' }" canvasId="luckyWheel" />
+    <cover-view class="lucky-wheel-btn" @touchstart="toPlay" :style="{ width: btnWidth + 'px', height: btnHeight + 'px' }"></cover-view>
     <view v-if="flag !== 'WEB'" class="lucky-imgs">
       <view v-for="(block, index) in blocks" :key="index">
         <view v-if="block.imgs">
@@ -28,7 +28,7 @@
 
 <script>
 import Taro from '@tarojs/taro'
-import { LuckyWheel } from 'lucky-canvas'
+import { LuckyWheel as Wheel } from 'lucky-canvas'
 import { changeUnits, resolveImage, getFlag } from '../utils'
 export default {
   props: {
@@ -51,6 +51,17 @@ export default {
       btnHeight: 0,
     }
   },
+  watch: {
+    blocks (newData) {
+      this.$lucky.blocks = newData
+    },
+    prizes (newData) {
+      this.$lucky.prizes = newData
+    },
+    buttons (newData) {
+      this.$lucky.buttons = newData
+    },
+  },
   mounted () {
     try {
       this.init()
@@ -70,7 +81,7 @@ export default {
       this.boxWidth = changeUnits(this.width)
       this.boxHeight = changeUnits(this.height)
       const ctx = this.ctx = Taro.createCanvasContext('luckyWheel', this)
-      const $lucky = this.$lucky = new LuckyWheel({
+      const $lucky = this.$lucky = new Wheel({
         flag: this.flag,
         ctx,
         width: this.boxWidth,
@@ -104,23 +115,18 @@ export default {
     toPlay () {
       this.$lucky.startCallback()
     },
-    handleClick (e) {
-      const { x, y } = e.changedTouches[0]
-      this.$lucky.drawEasterEggs(x, y, function () {
-        this.ctx.draw(true)
-      })
-    }
   }
 }
 </script>
 
-<style spcoed>
+<style>
   .lucky-box {
     position: relative;
     overflow: hidden;
   }
   #lucky-canvas {
     position: absolute;
+    pointer-events: none;
   }
   .lucky-wheel-btn {
     position: absolute;
