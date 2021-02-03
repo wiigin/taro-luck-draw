@@ -1,22 +1,23 @@
 <template>
-  <view class="lucky-box" :style="{ width: boxWidth + 'px', height: boxHeight + 'px' }">
+  <div v-if="flag === 'WEB'" ref="luckyBox"></div>
+  <view v-else class="lucky-box" :style="{ width: boxWidth + 'px', height: boxHeight + 'px' }">
     <canvas id="lucky-canvas" :style="{ width: boxWidth + 'px', height: boxHeight + 'px' }" canvasId="luckyWheel" />
     <cover-view class="lucky-wheel-btn" @touchstart="toPlay" :style="{ width: btnWidth + 'px', height: btnHeight + 'px' }"></cover-view>
-    <view v-if="flag !== 'WEB'" class="lucky-imgs">
+    <view class="lucky-imgs">
       <view v-for="(block, index) in blocks" :key="index">
         <view v-if="block.imgs">
           <image v-for="(img, i) in block.imgs" :key="i" :src="img.src" @load="e => imgBindload(e, 'blocks', index, i)"></image>
         </view>
       </view>
     </view>
-    <view v-if="flag !== 'WEB'" class="lucky-imgs">
+    <view class="lucky-imgs">
       <view v-for="(prize, index) in prizes" :key="index">
         <view v-if="prize.imgs">
           <image v-for="(img, i) in prize.imgs" :key="i" :src="img.src" @load="e => imgBindload(e, 'prizes', index, i)"></image>
         </view>
       </view>
     </view>
-    <view v-if="flag !== 'WEB'" class="lucky-imgs">
+    <view class="lucky-imgs">
       <view v-for="(btn, index) in buttons" :key="index">
         <view v-if="btn.imgs">
           <image v-for="(img, i) in btn.imgs" :key="i" :src="img.src" @load="e => imgBindload(e, 'buttons', index, i)"></image>
@@ -67,6 +68,7 @@ export default {
       this.init()
       this.$emit('success')
     } catch (err) {
+      console.error(err)
       this.$emit('error', err)
     } finally {
       this.$emit('finally')
@@ -80,21 +82,30 @@ export default {
     init () {
       this.boxWidth = changeUnits(this.width)
       this.boxHeight = changeUnits(this.height)
-      const ctx = this.ctx = Taro.createCanvasContext('luckyWheel', this)
+      let ctx, divElement, flag = this.flag
+      if (flag === 'WEB') {
+        divElement = this.$refs.luckyBox
+      } else {
+        ctx = this.ctx = Taro.createCanvasContext('luckyWheel', this)
+      }
       const $lucky = this.$lucky = new Wheel({
-        flag: this.flag,
+        flag,
+        divElement,
         ctx,
         width: this.boxWidth,
         height: this.boxHeight,
         unitFunc: (num, unit) => changeUnits(num + unit),
         beforeInit: function () {
+          if (flag === 'WEB') return
           const Radius = Math.min(this.config.width, this.config.height) / 2
           ctx.translate(-Radius, -Radius)
         },
         beforeDraw: function () {
+          if (flag === 'WEB') return
           ctx.translate(this.Radius, this.Radius)
         },
         afterDraw () {
+          if (flag === 'WEB') return
           ctx.draw()
         }
       }, {

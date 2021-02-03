@@ -9,11 +9,14 @@ export const getFlag = () => {
     case 'weapp':
       flag = 'TARO-MP'
       break
+    case 'qq':
+      flag = 'TARO-MP'
+      break
     case 'rn':
       flag = 'TARO-RN'
       break
     default:
-      flag = 'WEB'
+      flag = 'TARO-MP'
       break
   }
   return flag
