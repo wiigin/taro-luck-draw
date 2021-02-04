@@ -83,9 +83,6 @@ yarn add tato-luck-draw
 import { LuckyWheel, LuckyGrid } from 'taro-luck-draw/vue'
 export default {
   components: { LuckyWheel, LuckyGrid },
-  data () {
-    return {}
-  }
 }
 </script>
 ```
@@ -169,6 +166,85 @@ export default {
     endCallback (prize) {
       console.log(`恭喜你获得${prize.title}`)
     },
+  }
+}
+</script>
+```
+
+- **`taro-vue3`**
+
+```vue
+<template>
+  <view>
+    <LuckyWheel
+      ref="$lucky"
+      width="600rpx"
+      height="600rpx"
+      :prizes="prizes"
+      :blocks="blocks"
+      :buttons="buttons"
+      :defaultStyle="defaultStyle"
+      @start="startCallback"
+      @end="endCallback"
+    ></LuckyWheel>
+  </view>
+</template>
+
+<script>
+import { ref, reactive, toRefs } from 'vue'
+import { LuckyWheel } from 'taro-luck-draw/vue'
+export default {
+  components: { LuckyWheel },
+  setup () {
+    const $lucky = ref(null)
+    const state = reactive({
+      blocks: [
+        { padding: '13px', background: '#d64737' }
+      ],
+      prizes: [
+        { title: '1元红包', background: '#f9e3bb', fonts: [{ text: '1元红包', top: '18%' }] },
+        { title: '100元红包', background: '#f8d384', fonts: [{ text: '100元红包', top: '18%' }] },
+        { title: '0.5元红包', background: '#f9e3bb', fonts: [{ text: '0.5元红包', top: '18%' }] },
+        { title: '2元红包', background: '#f8d384', fonts: [{ text: '2元红包', top: '18%' }] },
+        { title: '10元红包', background: '#f9e3bb', fonts: [{ text: '10元红包', top: '18%' }] },
+        { title: '50元红包', background: '#f8d384', fonts: [{ text: '50元红包', top: '18%' }] },
+      ],
+      buttons: [
+        { radius: '50px', background: '#d64737' },
+        { radius: '45px', background: '#fff' },
+        { radius: '41px', background: '#f6c66f', pointer: true },
+        {
+          radius: '35px', background: '#ffdea0',
+          fonts: [{ text: '开始\n抽奖', fontSize: '18px', top: -18 }]
+        }
+      ],
+      defaultStyle: {
+        fontColor: '#d64737',
+        fontSize: '14px'
+      },
+    })
+    // 点击抽奖按钮会触发star回调
+    function startCallback () {
+      // 调用抽奖组件的play方法开始游戏
+      $lucky.value.play()
+      // 模拟调用接口异步抽奖
+      setTimeout(() => {
+        // 假设拿到后端返回的中奖索引
+        const index = Math.random() * 6 >> 0
+        // 调用stop停止旋转并传递中奖索引
+        $lucky.value.stop(index)
+      }, 3000)
+    }
+    // 抽奖结束会触发end回调
+    function endCallback (prize) {
+      console.log(`恭喜你获得${prize.title}`)
+    }
+    return {
+      ...toRefs(state),
+      startCallback,
+      endCallback,
+      $lucky
+    }
   }
 }
 </script>
