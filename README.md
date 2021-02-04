@@ -67,6 +67,9 @@ yarn add tato-luck-draw
 
 ### 使用
 
+- [点击查看 taro-vue2.x 示例 Demo](https://github.com/LuckDraw/taro-luck-draw#vue2.x-%E7%A4%BA%E4%BE%8B-Demo)
+- [点击查看 taro-vue3.x 示例 Demo](https://github.com/LuckDraw/taro-luck-draw#vue3.x-%E7%A4%BA%E4%BE%8B-Demo)
+
 - **`taro-vue`**
 
 ```vue
@@ -95,10 +98,7 @@ export default {
 
 <br />
 
-### 示例 Demo
-
-
-- **`taro-vue`**
+### vue2.x 示例 Demo
 
 ```vue
 <template>
@@ -171,7 +171,7 @@ export default {
 </script>
 ```
 
-- **`taro-vue3`**
+### vue3.x 示例 Demo
 
 ```vue
 <template>
