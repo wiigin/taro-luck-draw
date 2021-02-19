@@ -90,10 +90,30 @@ export default {
 </script>
 ```
 
+<br />
+
+- [点击查看 taro-react 示例 Demo](https://github.com/LuckDraw/taro-luck-draw#react-%E7%A4%BA%E4%BE%8B-demo)
+
 - **`taro-react`**
 
 ```jsx
-// 开发中
+import React from 'react'
+import { View } from '@tarojs/components'
+import { LuckyWheel, LuckyGrid } from 'taro-luck-draw/react'
+
+export default class Index extends React.Component {
+  render () {
+    return <View>
+
+      {/* 大转盘抽奖 */}
+      <LuckyWheel width="300px" height="300px" ...你的配置 />
+      
+      {/* 大转盘抽奖 */}
+      <LuckyGrid width="300px" height="300px" ...你的配置 />
+
+    </View>
+  }
+}
 ```
 
 <br />
@@ -248,6 +268,73 @@ export default {
   }
 }
 </script>
+```
+
+<br />
+
+### react 示例 Demo
+
+```jsx
+import React from 'react'
+import { LuckyWheel } from 'taro-luck-draw/react'
+
+export default class Index extends React.Component {
+  constructor () {
+    super()
+    this.myLucky = React.createRef()
+    this.state = {
+      blocks: [
+        { padding: '13px', background: '#d64737' }
+      ],
+      prizes: [
+        { title: '1元红包', background: '#f9e3bb', fonts: [{ text: '1元红包', top: '18%' }] },
+        { title: '100元红包', background: '#f8d384', fonts: [{ text: '100元红包', top: '18%' }] },
+        { title: '0.5元红包', background: '#f9e3bb', fonts: [{ text: '0.5元红包', top: '18%' }] },
+        { title: '2元红包', background: '#f8d384', fonts: [{ text: '2元红包', top: '18%' }] },
+        { title: '10元红包', background: '#f9e3bb', fonts: [{ text: '10元红包', top: '18%' }] },
+        { title: '50元红包', background: '#f8d384', fonts: [{ text: '50元红包', top: '18%' }] },
+      ],
+      buttons: [
+        { radius: '50px', background: '#d64737' },
+        { radius: '45px', background: '#fff' },
+        { radius: '41px', background: '#f6c66f', pointer: true },
+        {
+          radius: '35px', background: '#ffdea0',
+          fonts: [{ text: '开始\n抽奖', fontSize: '18px', top: -18 }]
+        }
+      ],
+      defaultStyle: {
+        fontColor: '#d64737',
+        fontSize: '14px'
+      },
+    }
+  }
+  render () {
+    return <LuckyWheel
+      ref={this.myLucky}
+      width="300px"
+      height="300px"
+      blocks={this.state.blocks}
+      prizes={this.state.prizes}
+      buttons={this.state.buttons}
+      defaultStyle={this.state.defaultStyle}
+      onStart={() => { // 点击抽奖按钮会触发star回调
+        // 调用抽奖组件的play方法开始游戏
+        this.myLucky.current.play()
+        // 模拟调用接口异步抽奖
+        setTimeout(() => {
+          // 假设拿到后端返回的中奖索引
+          const index = Math.random() * 6 >> 0
+          // 调用stop停止旋转并传递中奖索引
+          this.myLucky.current.stop(index)
+        }, 2500)
+      }}
+      onEnd={prize => { // 抽奖结束会触发end回调
+        console.log(prize)
+      }}
+    ></LuckyWheel>
+  }
+}
 ```
 
 <br />
