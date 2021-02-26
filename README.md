@@ -57,10 +57,10 @@
 
 ```shell
 # npm 安装：
-npm install tato-luck-draw
+npm install taro-luck-draw
 
 # yarn 安装：
-yarn add tato-luck-draw
+yarn add taro-luck-draw
 ```
 
 <br />
