@@ -67,7 +67,7 @@ export default class LuckyGrid extends React.Component {
     if (flag === 'WEB') {
       divElement = this.myLucky.current
     } else {
-      ctx = this.ctx = Taro.createCanvasContext('luckyWheel', this)
+      ctx = this.ctx = Taro.createCanvasContext('luckyGrid', this)
     }
     this.$lucky = new Grid({
       flag,
