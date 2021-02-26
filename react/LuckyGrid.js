@@ -50,11 +50,11 @@ export default class LuckyGrid extends React.Component {
     }
   }
   async imgBindload (res, name, index, i) {
-    const img = this[name][index].imgs[i]
+    const img = this.props[name][index].imgs[i]
     resolveImage(res, img)
   }
   async imgBindloadActive (res, name, index, i) {
-    const img = this[name][index].imgs[i]
+    const img = this.props[name][index].imgs[i]
     resolveImage(res, img, 'activeSrc', '$activeResolve')
   }
   init () {

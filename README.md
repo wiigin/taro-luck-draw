@@ -31,7 +31,7 @@
 
 ## 官方文档 & Demo演示
 
-> **中文**：[https://100px.net/document/taro.html](https://100px.net/document/taro.html)  
+> **中文**：[https://100px.net/usage/taro.html](https://100px.net/usage/taro.html)  
 
 > **English**：**If anyone can help translate the document, please contact me** `ldq404@qq.com`
 

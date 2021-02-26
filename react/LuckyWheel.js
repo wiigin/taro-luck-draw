@@ -43,7 +43,7 @@ export default class LuckyWheel extends React.Component {
     }
   }
   async imgBindload (res, name, index, i) {
-    const img = this[name][index].imgs[i]
+    const img = this.props[name][index].imgs[i]
     resolveImage(res, img)
   }
   init () {
