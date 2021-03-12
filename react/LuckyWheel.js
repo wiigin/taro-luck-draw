@@ -47,50 +47,51 @@ export default class LuckyWheel extends React.Component {
     resolveImage(res, img)
   }
   init () {
-    const { props, state } = this
+    const { props } = this
     this.setState({
       boxWidth: changeUnits(props.width),
       boxHeight: changeUnits(props.height)
-    })
-    let ctx, divElement, flag = this.flag
-    if (flag === 'WEB') {
-      divElement = this.myLucky.current
-    } else {
-      ctx = this.ctx = Taro.createCanvasContext('luckyWheel', this)
-    }
-    const $lucky = this.$lucky = new Wheel({
-      flag,
-      divElement,
-      ctx,
-      width: state.boxWidth,
-      height: state.boxHeight,
-      unitFunc: (num, unit) => changeUnits(num + unit),
-      beforeInit: function () {
-        if (flag === 'WEB') return
-        const Radius = Math.min(this.config.width, this.config.height) / 2
-        ctx.translate(-Radius, -Radius)
-      },
-      beforeDraw: function () {
-        if (flag === 'WEB') return
-        ctx.translate(this.Radius, this.Radius)
-      },
-      afterDraw () {
-        if (flag === 'WEB') return
-        ctx.draw()
+    }, () => {
+      let ctx, divElement, flag = this.flag
+      if (flag === 'WEB') {
+        divElement = this.myLucky.current
+      } else {
+        ctx = this.ctx = Taro.createCanvasContext('luckyWheel', this)
       }
-    }, {
-      ...props,
-      start: (...rest) => {
-        props.onStart && props.onStart(...rest)
-      },
-      end: (...rest) => {
-        props.onEnd && props.onEnd(...rest)
-      }
-    })
-    // 动态设置按钮大小
-    this.setState({
-      btnWidth: $lucky.maxBtnRadius * 2,
-      btnHeight: $lucky.maxBtnRadius * 2,
+      const $lucky = this.$lucky = new Wheel({
+        flag,
+        divElement,
+        ctx,
+        width: this.state.boxWidth,
+        height: this.state.boxHeight,
+        unitFunc: (num, unit) => changeUnits(num + unit),
+        beforeInit: function () {
+          if (flag === 'WEB') return
+          const Radius = Math.min(this.config.width, this.config.height) / 2
+          ctx.translate(-Radius, -Radius)
+        },
+        beforeDraw: function () {
+          if (flag === 'WEB') return
+          ctx.translate(this.Radius, this.Radius)
+        },
+        afterDraw () {
+          if (flag === 'WEB') return
+          ctx.draw()
+        }
+      }, {
+        ...props,
+        start: (...rest) => {
+          props.onStart && props.onStart(...rest)
+        },
+        end: (...rest) => {
+          props.onEnd && props.onEnd(...rest)
+        }
+      })
+      // 动态设置按钮大小
+      this.setState({
+        btnWidth: $lucky.maxBtnRadius * 2,
+        btnHeight: $lucky.maxBtnRadius * 2,
+      })
     })
   }
   play (...rest) {

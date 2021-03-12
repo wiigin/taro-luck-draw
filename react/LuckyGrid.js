@@ -21,7 +21,6 @@ export default class LuckyGrid extends React.Component {
   }
   componentDidMount () {
     const { props } = this
-    console.log(props.buttons)
     try {
       this.init()
       props.onSuccess && props.onSuccess()
@@ -58,50 +57,51 @@ export default class LuckyGrid extends React.Component {
     resolveImage(res, img, 'activeSrc', '$activeResolve')
   }
   init () {
-    const { props, state } = this
+    const { props } = this
     this.setState({
       boxWidth: changeUnits(props.width),
       boxHeight: changeUnits(props.height)
-    })
-    let ctx, divElement, flag = this.flag
-    if (flag === 'WEB') {
-      divElement = this.myLucky.current
-    } else {
-      ctx = this.ctx = Taro.createCanvasContext('luckyGrid', this)
-    }
-    this.$lucky = new Grid({
-      flag,
-      divElement,
-      ctx,
-      width: state.boxWidth,
-      height: state.boxHeight,
-      unitFunc: (num, unit) => changeUnits(num + unit),
-      afterDraw: function () {
-        if (flag === 'WEB') return
-        ctx.draw()
-      },
-    }, {
-      ...props,
-      start: (...rest) => {
-        props.onStart && props.onStart(...rest)
-      },
-      end: (...rest) => {
-        props.onEnd && props.onEnd(...rest)
+    }, () => {
+      let ctx, divElement, flag = this.flag
+      if (flag === 'WEB') {
+        divElement = this.myLucky.current
+      } else {
+        ctx = this.ctx = Taro.createCanvasContext('luckyGrid', this)
       }
+      this.$lucky = new Grid({
+        flag,
+        divElement,
+        ctx,
+        width: this.state.boxWidth,
+        height: this.state.boxHeight,
+        unitFunc: (num, unit) => changeUnits(num + unit),
+        afterDraw: function () {
+          if (flag === 'WEB') return
+          ctx.draw()
+        },
+      }, {
+        ...props,
+        start: (...rest) => {
+          props.onStart && props.onStart(...rest)
+        },
+        end: (...rest) => {
+          props.onEnd && props.onEnd(...rest)
+        }
+      })
+      // 动态设置按钮大小
+      const btns = []
+      props.buttons.forEach((btn, index) => {
+        if (!btn) return
+        const [left, top, width, height] = this.$lucky.getGeometricProperty([
+          btn.x,
+          btn.y,
+          btn.col || 1,
+          btn.row || 1
+        ])
+        btns[index] = { top, left, width, height }
+      })
+      this.setState({ btns, btnShow: true })
     })
-    // 动态设置按钮大小
-    const btns = []
-    props.buttons.forEach((btn, index) => {
-      if (!btn) return
-      const [left, top, width, height] = this.$lucky.getGeometricProperty([
-        btn.x,
-        btn.y,
-        btn.col || 1,
-        btn.row || 1
-      ])
-      btns[index] = { top, left, width, height }
-    })
-    this.setState({ btns, btnShow: true })
   }
   play (...rest) {
     this.$lucky.play(...rest)
